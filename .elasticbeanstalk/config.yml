@@ -1,0 +1,5 @@
+global:
+  default_ec2_keyname: trevari-prod-key
+  default_platform: 64bit Amazon Linux 2 v5.5.0 running Node.js 16
+  default_region: ap-northeast-2
+  workspace_type: Application

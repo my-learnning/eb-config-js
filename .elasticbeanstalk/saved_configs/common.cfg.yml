@@ -1,0 +1,109 @@
+EnvironmentConfigurationMetadata:
+  Description: trevari EB(elastic beanstalk) common raw config
+  DateCreated: '1652254246000'
+  DateModified: '1652254246000'
+
+Platform: ## Node 16
+  PlatformArn: arn:aws:elasticbeanstalk:ap-northeast-2::platform/64bit Amazon Linux 2 v5.5.0 running Node.js 16
+
+OptionSettings:
+  aws:elasticbeanstalk:command: ## 배포 정책
+    DeploymentPolicy : Immutable
+    BatchSizeType: Percentage
+    BatchSize: '100'
+
+  aws:elb:policies: ## 로드 벨런서 정책
+    ConnectionDrainingEnabled: true
+
+  aws:elb:loadbalancer: ## ELB 구성
+    CrossZone: true
+
+  aws:elasticbeanstalk:environment: ## EB 환경 서비스 구성
+    ServiceRole: aws-elasticbeanstalk-service-role
+    LoadBalancerType: application
+
+  aws:autoscaling:launchconfiguration: ## EC2 인스턴스 구성
+    IamInstanceProfile: aws-elasticbeanstalk-ec2-role
+    EC2KeyName: trevari-prod-key
+
+  aws:autoscaling:updatepolicy:rollingupdate: ## AutoScaling 롤링 업데이트 정책
+    RollingUpdateType: Immutable
+    RollingUpdateEnabled: true
+    MinInstancesInService : 1
+
+  AWSEBEC2LaunchTemplate.aws:ec2:vpc: ## VPC 정책
+    AssociatePublicIpAddress: true
+  AWSEBLoadBalancerSecurityGroup.aws:ec2:vpc:
+    VPCId: vpc-fc32c095
+  aws:ec2:vpc:
+    Subnets: subnet-9984b8d3,subnet-a435c9cd
+    ELBSubnets: subnet-9984b8d3,subnet-a435c9cd
+
+  aws:elasticbeanstalk:cloudwatch:logs: ## 로그 스트림 정책
+    StreamLogs: true
+
+  aws:elasticbeanstalk:healthreporting:system: ## 환경 상태 보고 정책
+    SystemType: enhanced
+    ConfigDocument:
+      Version: 1
+      CloudWatchMetrics:
+        Instance:
+          RootFilesystemUtil: null
+          CPUIrq: null
+          LoadAverage5min: null
+          ApplicationRequests5xx: null
+          ApplicationRequests4xx: null
+          CPUUser: null
+          LoadAverage1min: null
+          ApplicationLatencyP50: null
+          CPUIdle: null
+          InstanceHealth: null
+          ApplicationLatencyP95: null
+          ApplicationLatencyP85: null
+          ApplicationLatencyP90: null
+          CPUSystem: null
+          ApplicationLatencyP75: null
+          CPUSoftirq: null
+          ApplicationLatencyP10: null
+          ApplicationLatencyP99: null
+          ApplicationRequestsTotal: null
+          ApplicationLatencyP99.9: null
+          ApplicationRequests3xx: null
+          ApplicationRequests2xx: null
+          CPUIowait: null
+          CPUNice: null
+        Environment:
+          InstancesSevere: null
+          InstancesDegraded: null
+          ApplicationRequests5xx: null
+          ApplicationRequests4xx: null
+          ApplicationLatencyP50: null
+          ApplicationLatencyP95: null
+          ApplicationLatencyP85: null
+          InstancesUnknown: null
+          ApplicationLatencyP90: null
+          InstancesInfo: null
+          InstancesPending: null
+          ApplicationLatencyP75: null
+          ApplicationLatencyP10: null
+          ApplicationLatencyP99: null
+          ApplicationRequestsTotal: null
+          InstancesNoData: null
+          ApplicationLatencyP99.9: null
+          ApplicationRequests3xx: null
+          ApplicationRequests2xx: null
+          InstancesOk: null
+          InstancesWarning: null
+      Rules:
+        Environment:
+          ELB:
+            ELBRequests4xx:
+              Enabled: true
+          Application:
+            ApplicationRequests4xx:
+              Enabled: true
+
+EnvironmentTier:
+  Type: Standard
+  Name: WebServer
+AWSConfigurationTemplateVersion: 1.1.0.0
